@@ -1,0 +1,6 @@
+framework module Pods_FFAcssell {
+  umbrella header "Pods-FFAcssell-umbrella.h"
+
+  export *
+  module * { export * }
+}

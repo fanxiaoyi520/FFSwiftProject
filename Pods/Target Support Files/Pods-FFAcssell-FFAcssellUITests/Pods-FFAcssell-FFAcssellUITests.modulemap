@@ -1,0 +1,6 @@
+framework module Pods_FFAcssell_FFAcssellUITests {
+  umbrella header "Pods-FFAcssell-FFAcssellUITests-umbrella.h"
+
+  export *
+  module * { export * }
+}

@@ -1,0 +1,79 @@
+PODS:
+  - AEAlertView (2.3.8)
+  - Alamofire (5.7.1)
+  - FDFullscreenPopGesture (1.1)
+  - HandyJSON (5.0.2)
+  - IQKeyboardManagerSwift (6.3.0)
+  - Kingfisher (7.9.1)
+  - MJRefresh (3.7.5)
+  - RxSwift (6.6.0)
+  - RZCarPlateNoTextField (0.0.1):
+    - RZCarPlateNoTextField/KeyBoard (= 0.0.1)
+  - RZCarPlateNoTextField/KeyBoard (0.0.1)
+  - RZColorfulSwift (0.5.0)
+  - SnapKit (5.6.0)
+  - SVProgressHUD (2.2.5)
+  - swiftScan (1.2.1)
+  - Toast-Swift (5.0.1)
+
+DEPENDENCIES:
+  - AEAlertView (~> 2.3.8)
+  - Alamofire (~> 5.7.0)
+  - FDFullscreenPopGesture
+  - HandyJSON
+  - IQKeyboardManagerSwift (= 6.3.0)
+  - Kingfisher
+  - MJRefresh
+  - MJRefresh (~> 3.7.5)
+  - RxSwift
+  - RZCarPlateNoTextField
+  - RZColorfulSwift
+  - SnapKit
+  - SVProgressHUD
+  - swiftScan (from `https://github.com/MxABC/swiftScan.git`)
+  - Toast-Swift (~> 5.0.1)
+
+SPEC REPOS:
+  trunk:
+    - AEAlertView
+    - Alamofire
+    - FDFullscreenPopGesture
+    - HandyJSON
+    - IQKeyboardManagerSwift
+    - Kingfisher
+    - MJRefresh
+    - RxSwift
+    - RZCarPlateNoTextField
+    - RZColorfulSwift
+    - SnapKit
+    - SVProgressHUD
+    - Toast-Swift
+
+EXTERNAL SOURCES:
+  swiftScan:
+    :git: https://github.com/MxABC/swiftScan.git
+
+CHECKOUT OPTIONS:
+  swiftScan:
+    :commit: b0cc9aea11140125b75d1baaccb16c9567cdf69a
+    :git: https://github.com/MxABC/swiftScan.git
+
+SPEC CHECKSUMS:
+  AEAlertView: b401263d79da0b608f00207d0a47ee9b18eb4c28
+  Alamofire: 0123a34370cb170936ae79a8df46cc62b2edeb88
+  FDFullscreenPopGesture: a8a620179e3d9c40e8e00256dcee1c1a27c6d0f0
+  HandyJSON: 9e4e236f5d2dbefad5155a77417bbea438201c03
+  IQKeyboardManagerSwift: a8228c257614af98743b4cd8584637025f36358f
+  Kingfisher: 1d14e9f59cbe19389f591c929000332bf70efd32
+  MJRefresh: fdf5e979eb406a0341468932d1dfc8b7f9fce961
+  RxSwift: a4b44f7d24599f674deebd1818eab82e58410632
+  RZCarPlateNoTextField: 129f672c4971f64af9fbe08aea5dda58ddf500c9
+  RZColorfulSwift: c4cb0c4668a77a9a1b5cb1a884f6ae20f2be3f58
+  SnapKit: e01d52ebb8ddbc333eefe2132acf85c8227d9c25
+  SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
+  swiftScan: 0849e7d7c1c641384767a573ee8cb90b88d1ddd9
+  Toast-Swift: 9b6a70f28b3bf0b96c40d46c0c4b9d6639846711
+
+PODFILE CHECKSUM: 69aff78b463d6d0759889fe1a50ae4710faa7827
+
+COCOAPODS: 1.12.1
