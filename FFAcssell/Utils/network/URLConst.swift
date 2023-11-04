@@ -74,3 +74,5 @@ let OrderCancelById = "/api/Orders/OrderCancelById"
 
 // 注册
 let MerchantRegister = "/api/User/MerchantRegister"
+
+let GetOrderEditById = "/api/Orders/GetOrderEditById"

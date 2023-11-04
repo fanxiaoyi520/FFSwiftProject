@@ -22,6 +22,7 @@ target 'FFAcssell' do
   pod 'RZCarPlateNoTextField'
 #  pod 'FWPopupView'
   pod 'RZColorfulSwift'
+  pod 'Kingfisher','~>7.9.1'
   
   target 'FFAcssellTests' do
     inherit! :search_paths

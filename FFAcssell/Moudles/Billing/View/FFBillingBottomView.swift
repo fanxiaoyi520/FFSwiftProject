@@ -128,6 +128,6 @@ class FFBillingBottomView: UIView {
         subTitleLab.text = "\(totalPrice0+totalPrice1)"
         let num0 = model.productInfos.reduce(0) { $0 + $1.qty}
         let num1 = model.itemInfos.reduce(0) { $0 + $1.qty}
-        titleLab.text = "数量: \(num0+num1)件,金额:"
+        titleLab.text = "数量: \(abs(num0)+abs(num1))件,金额:"
     }
 }

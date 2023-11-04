@@ -24,6 +24,9 @@ class FFMineViewController: FFBaseViewController {
         self.tableView.isScrollEnabled = false
         self.tableView.register(FFMineCell.classForCoder(), forCellReuseIdentifier: "FFMineCell")
         self.tableView.frame = CGRect(x: 0, y: 0, width: getScreenWidth(), height: getScreenHeight()-getTabBarHeight()-getStatusBarAndNavigationBarHeight())
+        let size = UIImage(named: "setup_header")?.size
+        let headerView = FFHeaderView(frame: CGRect(x: 0, y: 0, width: getScreenWidth(), height: getScreenWidth() * size!.height / size!.width))
+        self.tableView.tableHeaderView = headerView
     }
     
 

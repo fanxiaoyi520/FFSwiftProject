@@ -148,7 +148,7 @@ class FFBillingViewController: FFBaseViewController {
         self.billingHeaderView?.updateTabbar(index: 2)
         ///执行收到通知后的操作
         let item = notifi.userInfo?["info"] as? Item
-        getOrderDetailById(item: item ?? Item())
+        getOrderEditById(item: item ?? Item())
         debugPrint("====编辑的订单数据:\(String(describing: item?.toJSONString()))")
     }
 
@@ -370,7 +370,6 @@ extension FFBillingViewController : UITableViewDataSource,UITableViewDelegate,FF
             return item
         }
         
-        
         self.billingHeaderView?.updateNum(num: allNum)
         self.billingBottomView?.update(model:orderModel)
         self.tableView2?.reloadData()
@@ -382,7 +381,7 @@ extension FFBillingViewController : UITableViewDataSource,UITableViewDelegate,FF
         
         if (item.typeStr == "product") {
             orderModel.productInfos = orderModel.productInfos.filter({ model in
-                model.qty = model.qty-1
+                model.qty = Int(item.num)
                 model.smallSum = Float(Int(model.outPrice) * (model.discount / 100) * (model.qty - model.canPayQty));
                 if (model.qty  <= 0) {
                     return model.stockId != item.id
@@ -393,7 +392,7 @@ extension FFBillingViewController : UITableViewDataSource,UITableViewDelegate,FF
 
         if (item.typeStr == "item" && !item.istemporary) {
             orderModel.itemInfos = orderModel.itemInfos.filter({ model in
-                model.qty = model.qty-1
+                model.qty = Int(item.num)
                 model.smallSum = Float(Int(model.outPrice) * (model.discount / 100) * (model.qty - model.canPayQty));
                 if (model.qty  <= 0) {
                     return model.itemId != item.id
@@ -405,7 +404,7 @@ extension FFBillingViewController : UITableViewDataSource,UITableViewDelegate,FF
         if (item.typeStr == "item" && item.istemporary) {
             orderModel.itemInfos = orderModel.itemInfos.filter({ model in
                 if (model.itemId == item.id) {
-                    model.qty = model.qty-1
+                    model.qty = Int(item.num)
                     model.smallSum = Float(Int(model.outPrice) * (model.discount / 100) * (model.qty - model.canPayQty));
                     if (model.qty  <= 0) {
                         return model.itemId != item.id
@@ -766,6 +765,54 @@ extension FFBillingViewController {
             arr = itemArr + productArr
             self.dataItems2 = arr
             self.tableView2?.reloadData()
+        },failure: { error in
+            debugPrint("====请求失败：\(error)")
+            ToastManager.shared.showToast(message: error.localizedDescription)
+        })
+    }
+    
+    func getOrderEditById(item:Item) -> Void {
+        let parameters = [
+            "OrderId": item.orderId,
+        ]
+        NetworkManager.shared.request(url: GetOrderEditById,
+                                      method: .get,
+                                      parameters: parameters as [String : Any],
+                                      success: { (response: ResponseModel<FFOrderModel>?) in
+            guard let response = response,response.status == 1 else {
+                ToastManager.shared.showToast(message: kLanguage(response?.message ?? "未知错误"))
+                return
+            }
+            debugPrint("====获取订单详情数据：\(String(describing: response.data?.toJSONString()))")
+            self.orderModel = response.data ?? FFOrderModel()
+            var arr = Array<FFShoppingCartModel>()
+            let itemArr = self.orderModel.itemInfos.map { item in
+                let model = FFShoppingCartModel()
+                model.id = item.itemId
+                model.name = item.itemName
+                model.price = item.outPrice
+                model.num = Int64(abs(item.qty))
+                model.typeStr = "item"
+                model.istemporary = item.itemId > 0 ? false : true
+                return model
+            }
+            
+            let productArr = self.orderModel.productInfos.map { item in
+                let model = FFShoppingCartModel()
+                model.id = item.stockId
+                model.name = item.productName
+                model.price = item.outPrice
+                model.num = Int64(abs(item.qty))
+                return model
+            }
+            arr = itemArr + productArr
+            self.dataItems2 = arr
+            self.tableView2?.reloadData()
+            
+            self.allNum = self.dataItems2.reduce(0) { $0 + $1.num}
+            debugPrint("====购物车总数量:\(self.allNum)")
+            self.billingHeaderView?.updateNum(num: self.allNum)
+            self.billingBottomView?.update(model: self.orderModel)
         },failure: { error in
             debugPrint("====请求失败：\(error)")
             ToastManager.shared.showToast(message: error.localizedDescription)

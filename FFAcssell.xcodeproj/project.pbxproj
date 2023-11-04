@@ -59,6 +59,7 @@
 		767E77BD2AD528440077952D /* FFHomeCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 767E77BC2AD528440077952D /* FFHomeCollectionCell.swift */; };
 		767E77BF2AD53EC40077952D /* FFHomeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 767E77BE2AD53EC40077952D /* FFHomeModel.swift */; };
 		767E77C12AD548D90077952D /* FFHomeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 767E77C02AD548D90077952D /* FFHomeTableViewCell.swift */; };
+		76878AB52AF1FDD3009FD7A2 /* FFHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76878AB42AF1FDD3009FD7A2 /* FFHeaderView.swift */; };
 		76879E172AD639F20027B575 /* FFCheckListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76879E162AD639F20027B575 /* FFCheckListCell.swift */; };
 		76879E192AD63E170027B575 /* FFCheckListModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76879E182AD63E170027B575 /* FFCheckListModel.swift */; };
 		76879E1B2AD6841D0027B575 /* FFOrderDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76879E1A2AD6841D0027B575 /* FFOrderDetailsViewController.swift */; };
@@ -160,6 +161,7 @@
 		767E77BC2AD528440077952D /* FFHomeCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FFHomeCollectionCell.swift; sourceTree = "<group>"; };
 		767E77BE2AD53EC40077952D /* FFHomeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FFHomeModel.swift; path = FFAcssell/Moudles/Home/View/FFHomeModel.swift; sourceTree = SOURCE_ROOT; };
 		767E77C02AD548D90077952D /* FFHomeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FFHomeTableViewCell.swift; sourceTree = "<group>"; };
+		76878AB42AF1FDD3009FD7A2 /* FFHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FFHeaderView.swift; sourceTree = "<group>"; };
 		76879E162AD639F20027B575 /* FFCheckListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FFCheckListCell.swift; sourceTree = "<group>"; };
 		76879E182AD63E170027B575 /* FFCheckListModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FFCheckListModel.swift; path = FFAcssell/Moudles/CheckList/View/FFCheckListModel.swift; sourceTree = SOURCE_ROOT; };
 		76879E1A2AD6841D0027B575 /* FFOrderDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FFOrderDetailsViewController.swift; sourceTree = "<group>"; };
@@ -459,6 +461,7 @@
 				767E77AA2AD402780077952D /* FFMineCell.swift */,
 				767E77AC2AD4E1760077952D /* FFChangePasswordViewController.swift */,
 				767E77AE2AD4F4880077952D /* FFAboutVersionsViewController.swift */,
+				76878AB42AF1FDD3009FD7A2 /* FFHeaderView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -925,6 +928,7 @@
 				766BA6F32AEF7BEB005A79B8 /* FFAccountAndPwdLoginView.swift in Sources */,
 				76879E172AD639F20027B575 /* FFCheckListCell.swift in Sources */,
 				766A2CE52ADA39BF00EC6F41 /* FWRadioButton.swift in Sources */,
+				76878AB52AF1FDD3009FD7A2 /* FFHeaderView.swift in Sources */,
 				761C69062AD2B16F0029789C /* Model.swift in Sources */,
 				763AAB862ADCD83200F52B84 /* FFCustomPopupView.swift in Sources */,
 				767E77BD2AD528440077952D /* FFHomeCollectionCell.swift in Sources */,

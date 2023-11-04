@@ -23,6 +23,7 @@ DEPENDENCIES:
   - HandyJSON
   - IQKeyboardManagerSwift (= 6.3.0)
   - Kingfisher
+  - Kingfisher (~> 7.9.1)
   - MJRefresh
   - MJRefresh (~> 3.7.5)
   - RxSwift
@@ -74,6 +75,6 @@ SPEC CHECKSUMS:
   swiftScan: 0849e7d7c1c641384767a573ee8cb90b88d1ddd9
   Toast-Swift: 9b6a70f28b3bf0b96c40d46c0c4b9d6639846711
 
-PODFILE CHECKSUM: 69aff78b463d6d0759889fe1a50ae4710faa7827
+PODFILE CHECKSUM: 15b964777733d096550fa7cd567f1dde07b2706a
 
 COCOAPODS: 1.12.1
