@@ -64,7 +64,8 @@ class ProductInfo: HandyJSON,Codable,Hashable {
     var cardNum: String?
     var discountAmount: Int = 0
     var smallSum: Float = 0
-    
+    var typeStr: String?
+    var istemporary: Bool = false
     required init() {}
 }
 
@@ -98,6 +99,7 @@ class ItemInfo: HandyJSON,Codable,Hashable {
     var discountAmount: Int = 0
     var smallSum: Float = 0
     var amount: Int = 0
-    
+    var typeStr: String?
+    var istemporary: Bool = false
     required init() {}
 }

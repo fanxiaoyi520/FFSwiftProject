@@ -148,6 +148,11 @@ class FFBillingViewController: FFBaseViewController {
         self.billingHeaderView?.updateTabbar(index: 2)
         ///执行收到通知后的操作
         let item = notifi.userInfo?["info"] as? Item
+        self.billingHeaderView?.textField.text = item?.carNum;
+        self.billingHeaderView?.accountTXT.text = item?.phone;
+        self.licenseModel = FFLicenseModel();
+        self.licenseModel?.customerId = "\(item?.orderId ?? 0)";
+
         getOrderEditById(item: item ?? Item())
         debugPrint("====编辑的订单数据:\(String(describing: item?.toJSONString()))")
     }
@@ -176,6 +181,8 @@ extension FFBillingViewController : FFBillingHeaderViewDelegate,UIScrollViewDele
         item.itemName = model.name
         item.outPrice = model.price ?? 0
         item.qty = Int(model.num)
+        item.typeStr = model.typeStr;
+        item.istemporary = model.istemporary;
         item.smallSum = Float(Int(item.outPrice) * (item.discount / 100) * (item.qty - item.canPayQty));
 
         orderModel.itemInfos.append(item)
@@ -327,6 +334,8 @@ extension FFBillingViewController : UITableViewDataSource,UITableViewDelegate,FF
             let item = self.dataItems0[indexPath?.row ?? 0]
             item.outPrice = model.price ?? 0
             item.smallSum = Float(Int(item.outPrice) * (item.discount / 100) * (item.qty - item.canPayQty));
+            item.typeStr = model.typeStr;
+            item.istemporary = model.istemporary;
             orderModel.productInfos.append(item)
             orderModel.productInfos = Array(Set(orderModel.productInfos))
             orderModel.productInfos = orderModel.productInfos.map { item in
@@ -348,6 +357,8 @@ extension FFBillingViewController : UITableViewDataSource,UITableViewDelegate,FF
             let item = self.dataItems1[indexPath?.row ?? 0]
             item.outPrice = model.price ?? 0
             item.smallSum = Float(Int(item.outPrice) * (item.discount / 100) * (item.qty - item.canPayQty));
+            item.typeStr = model.typeStr;
+            item.istemporary = model.istemporary;
             orderModel.itemInfos.append(item)
             orderModel.itemInfos = Array(Set(orderModel.itemInfos))
             orderModel.itemInfos = orderModel.itemInfos.map { item in
@@ -392,7 +403,7 @@ extension FFBillingViewController : UITableViewDataSource,UITableViewDelegate,FF
 
         if (item.typeStr == "item" && !item.istemporary) {
             orderModel.itemInfos = orderModel.itemInfos.filter({ model in
-                model.qty = Int(item.num)
+                if (!model.istemporary && item.id == model.itemId) {model.qty = Int(item.num);}
                 model.smallSum = Float(Int(model.outPrice) * (model.discount / 100) * (model.qty - model.canPayQty));
                 if (model.qty  <= 0) {
                     return model.itemId != item.id
@@ -785,6 +796,7 @@ extension FFBillingViewController {
             }
             debugPrint("====获取订单详情数据：\(String(describing: response.data?.toJSONString()))")
             self.orderModel = response.data ?? FFOrderModel()
+
             var arr = Array<FFShoppingCartModel>()
             let itemArr = self.orderModel.itemInfos.map { item in
                 let model = FFShoppingCartModel()
