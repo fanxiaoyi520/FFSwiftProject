@@ -120,7 +120,7 @@ class FFBillingBottomView: UIView {
     }
     
     //MARK: public
-    func update(model:FFOrderModel) -> Void {
+    func update(model:FFOrderModel,allNum:Int64) -> Void {
         
         let totalPrice0 = model.productInfos.reduce(0.0) { $0 + $1.smallSum}
         let totalPrice1 = model.itemInfos.reduce(0.0) { $0 + $1.smallSum}
@@ -128,6 +128,7 @@ class FFBillingBottomView: UIView {
         subTitleLab.text = "\(totalPrice0+totalPrice1)"
         let num0 = model.productInfos.reduce(0) { $0 + $1.qty}
         let num1 = model.itemInfos.reduce(0) { $0 + $1.qty}
-        titleLab.text = "数量: \(abs(num0)+abs(num1))件,金额:"
+        let all = abs(num0)+abs(num1) != allNum ? Int(allNum) : abs(num0)+abs(num1)
+        titleLab.text = "数量: \(all)件,金额:"
     }
 }

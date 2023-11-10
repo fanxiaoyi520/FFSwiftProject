@@ -70,7 +70,7 @@ class FFBillingViewController: FFBaseViewController {
         baseScrollView.delegate = self
         baseScrollView.frame = CGRect(x: 0, y: billingHeaderView.frame.size.height+searchView.frame.size.height, width: getScreenWidth(), height: getScreenHeight()-getTabBarHeight()-billingHeaderView.frame.size.height-searchView.frame.size.height)
         baseScrollView.contentSize = CGSize(width: getScreenWidth()*CGFloat(billingArr().count), height: baseScrollView.frame.height)
-        
+        print("高度:\(110+getSafeAreaHeight()+billingHeaderView.frame.size.height)")
         let billingBottomView = FFBillingBottomView(frame: CGRect(x: 0, y: getScreenHeight()-110-getSafeAreaHeight()-billingHeaderView.frame.size.height, width: getScreenWidth(), height: 110))
         view.addSubview(billingBottomView)
         self.billingBottomView = billingBottomView
@@ -198,7 +198,7 @@ extension FFBillingViewController : FFBillingHeaderViewDelegate,UIScrollViewDele
         dataItems2 = Array(Set(dataItems2))
         
         self.billingHeaderView?.updateNum(num: allNum)
-        self.billingBottomView?.update(model: orderModel)
+        self.billingBottomView?.update(model: orderModel,allNum: self.allNum)
         self.tableView2?.reloadData()
     }
     
@@ -328,7 +328,7 @@ extension FFBillingViewController : UITableViewDataSource,UITableViewDelegate,FF
             let indexPath = tableView.indexPath(for: sender.superview?.superview as! UITableViewCell)
             model.name = self.dataItems0[indexPath?.row ?? 0].productName
             model.price = self.dataItems0[indexPath?.row ?? 0].price1
-            model.id = self.dataItems0[indexPath?.row ?? 0].stockId
+            model.id = self.dataItems0[indexPath?.row ?? 0].productId
             model.typeStr = "product"
             
             let item = self.dataItems0[indexPath?.row ?? 0]
@@ -339,7 +339,7 @@ extension FFBillingViewController : UITableViewDataSource,UITableViewDelegate,FF
             orderModel.productInfos.append(item)
             orderModel.productInfos = Array(Set(orderModel.productInfos))
             orderModel.productInfos = orderModel.productInfos.map { item in
-                if (item.stockId == model.id) {
+                if (item.productId == model.id) {
                     item.outPrice = model.price ?? 0
                     item.qty += 1
                     item.smallSum = Float(Int(item.outPrice) * (item.discount / 100) * (item.qty - item.canPayQty));
@@ -382,7 +382,8 @@ extension FFBillingViewController : UITableViewDataSource,UITableViewDelegate,FF
         }
         
         self.billingHeaderView?.updateNum(num: allNum)
-        self.billingBottomView?.update(model:orderModel)
+        self.billingHeaderView?.updateTabbar(index: selIndex!)
+        self.billingBottomView?.update(model:orderModel,allNum: self.allNum)
         self.tableView2?.reloadData()
         debugPrint("====订单数据:\(String(describing: orderModel.toJSONString()))")
     }
@@ -395,7 +396,7 @@ extension FFBillingViewController : UITableViewDataSource,UITableViewDelegate,FF
                 model.qty = Int(item.num)
                 model.smallSum = Float(Int(model.outPrice) * (model.discount / 100) * (model.qty - model.canPayQty));
                 if (model.qty  <= 0) {
-                    return model.stockId != item.id
+                    return model.productId != item.id
                 }
                 return true
             })
@@ -443,7 +444,7 @@ extension FFBillingViewController : UITableViewDataSource,UITableViewDelegate,FF
         allNum = dataItems2.reduce(0) { $0 + $1.num}
         debugPrint("====购物车总数量:\(allNum)")
         self.billingHeaderView?.updateNum(num: allNum)
-        self.billingBottomView?.update(model: orderModel)
+        self.billingBottomView?.update(model: orderModel,allNum: self.allNum)
         self.tableView2?.reloadData()
     }
     
@@ -519,13 +520,13 @@ extension FFBillingViewController {
         
         switch selIndex {
         case 0,1,3:
-            self.tableView0?.frame = CGRect(x: CGFloat(self.selIndex ?? 0)*getScreenWidth(), y: 0, width: getScreenWidth(), height: self.baseScrollView.frame.height-getTabBarHeight()-110)
+            self.tableView0?.frame = CGRect(x: 0, y: 0, width: getScreenWidth(), height: self.baseScrollView.frame.height-getTabBarHeight()-110)
             self.tableView1?.frame = CGRect(x: getScreenWidth(), y: 0, width: getScreenWidth(), height: self.baseScrollView.frame.height-getTabBarHeight()-110)
             self.tableView2?.frame = CGRect(x: CGFloat(2)*getScreenWidth(), y: 0, width: getScreenWidth(), height: self.baseScrollView.frame.height-getTabBarHeight()-110)
         default:break
         }
         
-        self.billingBottomView?.frame = CGRect(x: 0, y: (self.billingHeaderView?.frame.size.height ?? 131)+(self.searchView?.frame.size.height ?? 50) + self.baseScrollView.frame.height-getTabBarHeight()-110, width: getScreenWidth(), height: 110)
+//        self.billingBottomView?.frame = CGRect(x: 0, y: (self.billingHeaderView?.frame.size.height ?? 131)+(self.searchView?.frame.size.height ?? 50) + self.baseScrollView.frame.height-getTabBarHeight()-110, width: getScreenWidth(), height: 110)
     }
     
     // 下拉刷新方法
@@ -701,11 +702,22 @@ extension FFBillingViewController {
             if (self.orderModel.isFormalOrder == true) {
                 self.allNum = 0
                 self.dataItems2.removeAll()
+                self.dataItems0 = self.dataItems0.compactMap { product in
+                    product.qty = 0
+                    product.smallSum = 0
+                    return product
+                }
+                self.dataItems1 = self.dataItems1.compactMap { item in
+                    item.qty = 0
+                    item.smallSum = 0
+                    return item
+                }
+                self.dataItems2.removeAll()
                 self.orderModel = FFOrderModel()
                 self.billingHeaderView?.accountTXT.text = ""
                 self.billingHeaderView?.textField.text = ""
                 self.billingHeaderView?.updateNum(num: self.allNum)
-                self.billingBottomView?.update(model: self.orderModel)
+                self.billingBottomView?.update(model: self.orderModel,allNum: self.allNum)
                 self.tableView2?.reloadData()
             }
         },failure: { error in
@@ -767,7 +779,7 @@ extension FFBillingViewController {
             
             let productArr = self.orderModel.productInfos.map { item in
                 let model = FFShoppingCartModel()
-                model.id = item.stockId
+                model.id = item.productId
                 model.name = item.storeName
                 model.price = item.price1
                 model.num = Int64(item.qty)
@@ -811,7 +823,7 @@ extension FFBillingViewController {
             
             let productArr = self.orderModel.productInfos.map { item in
                 let model = FFShoppingCartModel()
-                model.id = item.stockId
+                model.id = item.productId
                 model.name = item.productName
                 model.price = item.outPrice
                 model.num = Int64(abs(item.qty))
@@ -824,7 +836,7 @@ extension FFBillingViewController {
             self.allNum = self.dataItems2.reduce(0) { $0 + $1.num}
             debugPrint("====购物车总数量:\(self.allNum)")
             self.billingHeaderView?.updateNum(num: self.allNum)
-            self.billingBottomView?.update(model: self.orderModel)
+            self.billingBottomView?.update(model: self.orderModel,allNum: self.allNum)
         },failure: { error in
             debugPrint("====请求失败：\(error)")
             ToastManager.shared.showToast(message: error.localizedDescription)

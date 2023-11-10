@@ -17,7 +17,7 @@ class FFShoppingCartModelList: HandyJSON,Codable {
 
 class FFShoppingCartModel: HandyJSON,Codable,Hashable {
 
-    var id: Int64? = Int64(arc4random())
+    var id: Int64 = Int64(arc4random())
     var name: String?
     var price: Float?
     var num: Int64 = 0
