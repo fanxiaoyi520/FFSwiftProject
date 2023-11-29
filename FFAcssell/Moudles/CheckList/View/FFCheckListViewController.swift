@@ -84,6 +84,7 @@ class FFCheckListViewController: FFBaseViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        page = 1
         getOrderListInMobile(indexPath: self.indexPath ?? IndexPath(row: 0, section: 0))
     }
     
@@ -105,6 +106,7 @@ extension FFCheckListViewController : UIScrollViewDelegate, FFHomeHeaderViewDele
     func homeHeaderViewCollectionCollectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         debugPrint("====切换tab:\(indexPath.row)")
         self.indexPath = indexPath
+        self.page = 1
         self.tableView.mj_footer?.resetNoMoreData()
         getOrderListInMobile(indexPath: indexPath)
     }
@@ -149,7 +151,6 @@ extension FFCheckListViewController {
                 "timespan": inputStr,
                 "Page":page,
                 "pageSize":10,
-                "carNum":searchTXT.text ?? ""
             ] as [String : Any]
         }
         

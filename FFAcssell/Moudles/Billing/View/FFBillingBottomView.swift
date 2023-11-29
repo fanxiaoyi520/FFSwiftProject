@@ -129,6 +129,7 @@ class FFBillingBottomView: UIView {
         let num0 = model.productInfos.reduce(0) { $0 + $1.qty}
         let num1 = model.itemInfos.reduce(0) { $0 + $1.qty}
         let all = abs(num0)+abs(num1) != allNum ? Int(allNum) : abs(num0)+abs(num1)
+        //let all = abs(num0)+abs(num1)
         titleLab.text = "数量: \(all)件,金额:"
     }
 }

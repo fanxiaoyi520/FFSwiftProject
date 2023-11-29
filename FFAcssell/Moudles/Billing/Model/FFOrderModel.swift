@@ -10,7 +10,8 @@ import Foundation
 import HandyJSON
 
 class FFOrderModel: HandyJSON {
-    
+
+    var orderId: Int64?
     var customerId: String?
     var km: Int = 0
     var paywayId: Int = 1

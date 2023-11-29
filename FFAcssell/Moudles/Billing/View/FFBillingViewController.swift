@@ -29,7 +29,7 @@ class FFBillingViewController: FFBaseViewController {
     
     var billingBottomView : FFBillingBottomView?
 
-    var id : String? = "0"
+    var id : String? = nil
 
     var allNum : Int64 = 0
 
@@ -148,11 +148,15 @@ class FFBillingViewController: FFBaseViewController {
         self.billingHeaderView?.updateTabbar(index: 2)
         ///执行收到通知后的操作
         let item = notifi.userInfo?["info"] as? Item
-        self.billingHeaderView?.textField.text = item?.carNum;
-        self.billingHeaderView?.accountTXT.text = item?.phone;
-        self.licenseModel = FFLicenseModel();
-        self.licenseModel?.customerId = "\(item?.orderId ?? 0)";
-
+        self.billingHeaderView?.textField.text = item?.carNum
+        self.billingHeaderView?.accountTXT.text = item?.phone
+        self.licenseModel = FFLicenseModel()
+        self.licenseModel?.customerId = nil
+        self.licenseModel?.carNum = item?.carNum
+        self.licenseModel?.phone = item?.phone
+        self.licenseModel?.orderId = item?.orderId
+        self.billingHeaderView?.textField.text = item?.carNum
+        self.billingHeaderView?.accountTXT.text = item?.phone
         getOrderEditById(item: item ?? Item())
         debugPrint("====编辑的订单数据:\(String(describing: item?.toJSONString()))")
     }
@@ -393,9 +397,11 @@ extension FFBillingViewController : UITableViewDataSource,UITableViewDelegate,FF
         
         if (item.typeStr == "product") {
             orderModel.productInfos = orderModel.productInfos.filter({ model in
-                model.qty = Int(item.num)
-                model.smallSum = Float(Int(model.outPrice) * (model.discount / 100) * (model.qty - model.canPayQty));
-                if (model.qty  <= 0) {
+                if (item.id == model.productId) {
+                    model.qty = Int(item.num)
+                    model.smallSum = Float(Int(model.outPrice) * (model.discount / 100) * (model.qty - model.canPayQty));
+                }
+                if (item.num  <= 0) {
                     return model.productId != item.id
                 }
                 return true
@@ -687,7 +693,10 @@ extension FFBillingViewController {
         orderModel.isFormalOrder = isFormalOrder ?? false
         let totalPrice = dataItems2.reduce(0.0) { $0 + (($1.price ?? 0.0) * Float($1.num)) }
         orderModel.actualAmount = totalPrice
-        orderModel.customerId = self.licenseModel != nil ? self.licenseModel?.customerId : id
+        orderModel.orderId = self.licenseModel?.orderId
+        if (id != nil) {
+            orderModel.customerId = id
+        }
         let parameters = orderModel.toJSON()
         
         NetworkManager.shared.request(url: OrderSave,

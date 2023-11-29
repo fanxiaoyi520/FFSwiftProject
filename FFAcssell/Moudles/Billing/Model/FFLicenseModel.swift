@@ -23,6 +23,7 @@ class FFLicenseModel: HandyJSON,Codable {
     var customerId: String?
     var carNum: String? = "无"
     var phone: String?
+    var orderId: Int64?
 
     required init() {}
 }
