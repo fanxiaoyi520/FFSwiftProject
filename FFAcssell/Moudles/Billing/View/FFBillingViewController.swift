@@ -502,6 +502,7 @@ extension FFBillingViewController {
         let menuView = FWMenuView.menu(itemTitles: titles, itemImageNames: nil, itemBlock: { (popupView, index, title) in
             debugPrint("Menu：点击了第\(index)个按钮")
             self.licenseModel = json.data?[index]
+            self.id = self.licenseModel?.customerId
             self.billingHeaderView?.textField.text = json.data?[index].carNum
             IQKeyboardManager.shared.resignFirstResponder()
             self.billingHeaderView?.updateContent(licenseModel: json.data?[index] ?? FFLicenseModel(),completion: { [weak self] in
@@ -697,6 +698,7 @@ extension FFBillingViewController {
         if (id != nil) {
             orderModel.customerId = id
         }
+        
         let parameters = orderModel.toJSON()
         
         NetworkManager.shared.request(url: OrderSave,
